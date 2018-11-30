@@ -11,7 +11,7 @@ class ToDoApp extends React.Component {
     this.newItem = React.createRef();
     console.clear();
     console.log(
-      "Constructor for ToDo app completed and the list is initialised as..." +
+      "ToDoApp-> Constructor :  list is initialised as..." +
         JSON.stringify(this.state.list)
     );
   }
@@ -41,17 +41,16 @@ class ToDoApp extends React.Component {
   add = () => {
     //  let newItem =this.refs.newItem.value;
     let newItem = this.newItem.current["value"];
-     if (newItem!='') {
-
-              this.setState({ list: [...this.state.list, newItem] });
-      this.newItem.current["value"]='';
-      console.log("\n ***Add Button Pressed... **");
-      console.log(
-        "Add handler will pull value from the input field and set the new state for ToDO app"
-      );
-      console.log(
-        "Tip : You can use React.createRef() to reference Virtual DOM elements.  "
-      );
+    if (newItem!='') {
+        this.setState({ list: [...this.state.list, newItem] });
+        this.newItem.current["value"]='';
+        console.log("\n ***Add Button Pressed... **");
+        console.log(
+          "Add handler will pull value from the input field and set the new state for ToDO app"
+        );
+        console.log(
+          "Tip : You can use React.createRef() to reference Virtual DOM elements.  "
+        );
      }
 
 
@@ -93,7 +92,7 @@ class ToDoList extends React.Component {
     super();
     this.state = { value: props.item };
     console.log(
-      "Constructor for ToDoList completed and the item value is initialised as..." +
+      "ToDoList->Constructor : item value is initialised as..." +
         JSON.stringify(this.state)
     );
     console.log('-- ToDoList will RENDER..."' + this.state.value + '" to list');
@@ -102,7 +101,7 @@ class ToDoList extends React.Component {
     if (nextProps.item != this.props.item)
       this.setState({ ...this.state, value: nextProps.item });
     console.log(
-      '-- ToDoList HOOK detetected property change..."' +
+      'ToDoList -> componentWillReceiveProps : detected property change..."' +
         nextProps.item +
         "--" +
         this.props.item
@@ -124,7 +123,7 @@ class ToDoList extends React.Component {
 
   componentWillUnmount() {
     console.log(
-      "-- ToDoList will unmount and  delete item .." + this.state.value
+      "ToDoList -> componentWillUnmount :  unmount and  delete item .." + this.state.value
     );
   }
 }
