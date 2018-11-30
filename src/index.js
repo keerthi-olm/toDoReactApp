@@ -20,10 +20,9 @@ class ToDoApp extends React.Component {
     return (
       <div className="App widget">
         <ul id="list">
-          {" "}
           <li className="header"><h3>ToDo App </h3></li>
           <li className="mainsmall">
-            <input ref={this.newItem} />{" "}
+            <input ref={this.newItem} placeholder="Add a new task..."/>
           </li>
           <li className="button add">
             <button onClick={this.add}>Add</button>
@@ -42,15 +41,20 @@ class ToDoApp extends React.Component {
   add = () => {
     //  let newItem =this.refs.newItem.value;
     let newItem = this.newItem.current["value"];
+     if (newItem!='') {
 
-    this.setState({ list: [...this.state.list, newItem] });
-    console.log("\n ***Add Button Pressed... **");
-    console.log(
-      "Add handler will pull value from the input field and set the new state for ToDO app"
-    );
-    console.log(
-      "Tip : You can use React.createRef() to reference Virtual DOM elements.  "
-    );
+              this.setState({ list: [...this.state.list, newItem] });
+      this.newItem.current["value"]='';
+      console.log("\n ***Add Button Pressed... **");
+      console.log(
+        "Add handler will pull value from the input field and set the new state for ToDO app"
+      );
+      console.log(
+        "Tip : You can use React.createRef() to reference Virtual DOM elements.  "
+      );
+     }
+
+
   };
 
   reset = () => {
