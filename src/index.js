@@ -7,7 +7,7 @@ import "./styles.css";
 class ToDoApp extends React.Component {
   constructor(props) {
     super();
-    this.state = { list: props.list, change: "false" };
+    this.state = { list: props.list, change: "false" , removeList:[] };
     this.newItem = React.createRef();
     console.clear();
     console.log(
@@ -31,7 +31,7 @@ class ToDoApp extends React.Component {
             <button onClick={this.reset}>Reset</button>
           </li>
           {this.state.list.map((value, i) => {
-            return <ToDoList key={i} i={i} item={value} remove={this.remove} />;
+            return <ToDoList key={i} i={i} item={value} remove={this.remove} removeItem={this.removeItem}/>;
           })}
         </ul>
       </div>
@@ -41,7 +41,7 @@ class ToDoApp extends React.Component {
   add = () => {
     //  let newItem =this.refs.newItem.value;
     let newItem = this.newItem.current["value"];
-    if (newItem!='') {
+    if (newItem!=='') {
         this.setState({ list: [...this.state.list, newItem] });
         this.newItem.current["value"]='';
         console.log("\n ***Add Button Pressed... **");
@@ -77,6 +77,18 @@ class ToDoApp extends React.Component {
 
     // this.setState({ list: ["item10", "item20"] });
   };
+  removeItem = id => {
+    //  let newItem =this.refs.newItem.value;
+
+    var array = [...this.state.list]; // make a separate copy of the array
+    // var index = id;
+    // array.splice(index, 1);
+    // this.setState({ list: array });
+    console.log('id--->'+id);
+
+    // this.setState({ list: ["item10", "item20"] });
+  };
+
 }
 
 ToDoApp.propTypes = {
@@ -90,7 +102,7 @@ ToDoApp.defaultProps = {
 class ToDoList extends React.Component {
   constructor(props) {
     super();
-    this.state = { value: props.item };
+    this.state = { value: props.item , checked:false};
     console.log(
       "ToDoList->Constructor : item value is initialised as..." +
         JSON.stringify(this.state)
@@ -98,7 +110,7 @@ class ToDoList extends React.Component {
     console.log('-- ToDoList will RENDER..."' + this.state.value + '" to list');
   }
   componentWillReceiveProps(nextProps) {
-    if (nextProps.item != this.props.item)
+    if (nextProps.item !== this.props.item)
       this.setState({ ...this.state, value: nextProps.item });
     console.log(
       'ToDoList -> componentWillReceiveProps : detected property change..."' +
@@ -107,13 +119,21 @@ class ToDoList extends React.Component {
         this.props.item
     );
   }
+  handleClick = (e) => {
+    this.setState({
+      checked: !this.state.checked
+    });
+   this.props.removeItem(e.target.id);
+  }
 
   render() {
     /** RENDER  **/
     console.log("-- render");
+    
+    let text = this.state.checked ? <strike>{this.state.value}</strike> : this.state.value;
     return (
       <li className="main">
-        {this.state.value}
+        <input type="checkbox" onClick={this.handleClick} id={this.props.i}/>{text}
         <button className='remove'  id={this.props.i} onClick={this.props.remove}>
           Remove
         </button>
