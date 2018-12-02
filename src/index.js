@@ -45,7 +45,7 @@ class ToDoApp extends React.Component {
     if (newItem!=='') {
         this.setState({ list: [...this.state.list, newItem] });
         this.newItem.current["value"]='';
-        this.doneList[this.state.list.length]=false;
+        // this.doneList[this.state.list.length]=false;
         console.log(this.doneList);
 
         console.log("\n ***Add Button Pressed... **");
@@ -76,15 +76,19 @@ class ToDoApp extends React.Component {
 
     var array = [...this.state.list]; // make a separate copy of the array
     var index = e.target.id;
-    array.splice(index, 1);
-    this.setState({ list: array });
-
+    // array.splice(index, 1);
+    // this.setState({ list: array });
+    
+    this.doneList.map((value, i) => {if (value===true) {array.splice(i, 1)}});
+     console.log(array);
     // this.setState({ list: ["item10", "item20"] });
   };
   removeItem = id => {
     //  let newItem =this.refs.newItem.value;
 
-    this.doneList[id]=!this.doneList[id]; // make a separate copy of the array
+if(this.doneList[id] === undefined) 
+  { this.doneList[id]=id } else {this.doneList.splice(id,1)}
+    // this.doneList[id]=!this.doneList[id]; // make a separate copy of the array
     // var index = id;
     // array.splice(index, 1);
     // this.setState({ list: array });
@@ -102,7 +106,7 @@ ToDoApp.propTypes = {
 
 ToDoApp.defaultProps = {
   list: ["Get up in the morning", "Brush my teeth"],
-  doneList: [false,false]
+  doneList: []
 };
 
 class ToDoList extends React.Component {
