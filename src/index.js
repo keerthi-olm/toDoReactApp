@@ -7,8 +7,9 @@ import "./styles.css";
 class ToDoApp extends React.Component {
   constructor(props) {
     super();
-    this.state = { list: props.list, change: "false" , removeList:[] };
+    this.state = { list: props.list, change: "false" , doneList:props.doneList };
     this.newItem = React.createRef();
+    this.doneList=props.doneList;
     console.clear();
     console.log(
       "ToDoApp-> Constructor :  list is initialised as..." +
@@ -44,6 +45,9 @@ class ToDoApp extends React.Component {
     if (newItem!=='') {
         this.setState({ list: [...this.state.list, newItem] });
         this.newItem.current["value"]='';
+        this.doneList[this.state.list.length]=false;
+        console.log(this.doneList);
+
         console.log("\n ***Add Button Pressed... **");
         console.log(
           "Add handler will pull value from the input field and set the new state for ToDO app"
@@ -80,11 +84,12 @@ class ToDoApp extends React.Component {
   removeItem = id => {
     //  let newItem =this.refs.newItem.value;
 
-    var array = [...this.state.list]; // make a separate copy of the array
+    this.doneList[id]=!this.doneList[id]; // make a separate copy of the array
     // var index = id;
     // array.splice(index, 1);
     // this.setState({ list: array });
-    console.log('id--->'+id);
+    console.log('donelist afterremove-->');
+    console.log(this.doneList);
 
     // this.setState({ list: ["item10", "item20"] });
   };
@@ -96,7 +101,8 @@ ToDoApp.propTypes = {
 };
 
 ToDoApp.defaultProps = {
-  list: ["Get up in the morning", "Brush my teeth"]
+  list: ["Get up in the morning", "Brush my teeth"],
+  doneList: [false,false]
 };
 
 class ToDoList extends React.Component {
