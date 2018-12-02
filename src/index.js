@@ -10,10 +10,11 @@ class ToDoApp extends React.Component {
     this.state = { list: props.list, change: "false" , doneList:props.doneList };
     this.newItem = React.createRef();
     this.doneList=props.doneList;
+    this.list=[...this.state.list];
     console.clear();
     console.log(
       "ToDoApp-> Constructor :  list is initialised as..." +
-        JSON.stringify(this.state.list)
+        JSON.stringify(this.list)
     );
   }
 
@@ -53,8 +54,7 @@ class ToDoApp extends React.Component {
           "Add handler will pull value from the input field and set the new state for ToDO app"
         );
         console.log(
-          "Tip : You can use React.createRef() to reference Virtual DOM elements.  "
-        );
+          "Tip : You can use React.createRef() to reference Virtual DOM elements.  ");
      }
 
 
@@ -74,28 +74,52 @@ class ToDoApp extends React.Component {
   remove = e => {
     //  let newItem =this.refs.newItem.value;
 
-    var array = [...this.state.list]; // make a separate copy of the array
-    var index = e.target.id;
-    // array.splice(index, 1);
-    // this.setState({ list: array });
+    // var array = [...this.state.list]; // make a separate copy of the array
+    // var index = e.target.id;
+    // // array.splice(index, 1);
+    // // this.setState({ list: array });
     
-    this.doneList.map((value, i) => {if (value===true) {array.splice(i, 1)}});
-     console.log(array);
-    // this.setState({ list: ["item10", "item20"] });
+    // this.doneList.map((value, i) => {if (value===true) {array.splice(i, 1)}});
+    //  console.log(array);
+    // // this.setState({ list: ["item10", "item20"] });
+
+    for (var i = this.doneList.length -1; i >= 0; i--)
+       this.list.splice(this.doneList[i],1);
+
+
+   console.log(this.list);
+
   };
   removeItem = id => {
     //  let newItem =this.refs.newItem.value;
 
-if(this.doneList[id] === undefined) 
-  { this.doneList[id]=id } else {this.doneList.splice(id,1)}
-    // this.doneList[id]=!this.doneList[id]; // make a separate copy of the array
-    // var index = id;
-    // array.splice(index, 1);
-    // this.setState({ list: array });
-    console.log('donelist afterremove-->');
-    console.log(this.doneList);
+  // if(this.doneList.filter(item => item !== id)) 
+  // { this.doneList.push(id);} else {this.doneList.splice(id,1)}
+  //   // this.doneList[id]=!this.doneList[id]; // make a separate copy of the array
+  //   // var index = id;
+  //   // array.splice(index, 1);
+  //   // this.setState({ list: array });
+  //   console.log('donelist afterremove-->');
+  //   console.log(this.doneList);
 
-    // this.setState({ list: ["item10", "item20"] });
+  //   // this.setState({ list: ["item10", "item20"] });
+
+  let f = this.doneList.filter(function (val) {
+        return (val === id);
+    });
+
+    if (f===undefined || f.length===0) {
+    // add to list
+    this.doneList.push(id);
+    } else {
+    //delete
+    this.doneList= this.doneList.filter(function (val) {
+        return (val !== id);
+    });
+    }
+         console.log('donelist afterremove-->');
+         console.log(this.doneList);
+
   };
 
 }
