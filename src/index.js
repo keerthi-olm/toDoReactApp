@@ -9,7 +9,7 @@ class ToDoApp extends React.Component {
     super();
     this.state = { list: props.list, change: "false" , doneList:props.doneList };
     this.newItem = React.createRef();
-    this.doneList=props.doneList;
+    this.doneList=[...props.doneList];
     this.list=[...this.state.list];
     console.clear();
     console.log(
@@ -18,11 +18,18 @@ class ToDoApp extends React.Component {
     );
   }
 
+componentWillUpdate(nextProps, nextState) {
+   console.log('will update');
+       this.doneList=[];
+    this.list=[...nextState.list];
+    console.log(this.list);
+}
+
   render() {
     return (
       <div className="App widget">
         <ul id="list">
-          <li className="header"><h3>ToDo App </h3></li>
+          <li className="header"><h2>My to do list </h2></li>
           <li className="mainsmall">
             <input ref={this.newItem} placeholder="Add a new task..."/>
           </li>
@@ -35,6 +42,9 @@ class ToDoApp extends React.Component {
           {this.state.list.map((value, i) => {
             return <ToDoList key={i} i={i} item={value} remove={this.remove} removeItem={this.removeItem}/>;
           })}
+          <li className="footer"><button className='remove'  onClick={this.remove}>
+          Remove
+        </button></li>
         </ul>
       </div>
     );
@@ -72,53 +82,37 @@ class ToDoApp extends React.Component {
   };
 
   remove = e => {
-    //  let newItem =this.refs.newItem.value;
 
-    // var array = [...this.state.list]; // make a separate copy of the array
-    // var index = e.target.id;
-    // // array.splice(index, 1);
-    // // this.setState({ list: array });
-    
-    // this.doneList.map((value, i) => {if (value===true) {array.splice(i, 1)}});
-    //  console.log(array);
-    // // this.setState({ list: ["item10", "item20"] });
 
+this.doneList.sort((a, b) => a - b);
+console.log(this.doneList);
     for (var i = this.doneList.length -1; i >= 0; i--)
        this.list.splice(this.doneList[i],1);
 
+ this.setState({ list: [...this.list] });
 
    console.log(this.list);
+   this.doneList=[];
 
   };
   removeItem = id => {
-    //  let newItem =this.refs.newItem.value;
 
-  // if(this.doneList.filter(item => item !== id)) 
-  // { this.doneList.push(id);} else {this.doneList.splice(id,1)}
-  //   // this.doneList[id]=!this.doneList[id]; // make a separate copy of the array
-  //   // var index = id;
-  //   // array.splice(index, 1);
-  //   // this.setState({ list: array });
-  //   console.log('donelist afterremove-->');
-  //   console.log(this.doneList);
 
-  //   // this.setState({ list: ["item10", "item20"] });
+      let f = this.doneList.filter(function (val) {
+          return (val === id);
+      });
 
-  let f = this.doneList.filter(function (val) {
-        return (val === id);
-    });
-
-    if (f===undefined || f.length===0) {
-    // add to list
-    this.doneList.push(id);
-    } else {
-    //delete
-    this.doneList= this.doneList.filter(function (val) {
-        return (val !== id);
-    });
-    }
-         console.log('donelist afterremove-->');
-         console.log(this.doneList);
+      if (f===undefined || f.length===0) {
+      // add to list
+      this.doneList.push(id);
+      } else {
+      //delete from list
+      this.doneList= this.doneList.filter(function (val) {
+          return (val !== id);
+      });
+      }
+           console.log('donelist afterremove-->');
+           console.log(this.doneList);
 
   };
 
@@ -145,7 +139,7 @@ class ToDoList extends React.Component {
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps.item !== this.props.item)
-      this.setState({ ...this.state, value: nextProps.item });
+      this.setState({ ...this.state, value: nextProps.item , checked:false});
     console.log(
       'ToDoList -> componentWillReceiveProps : detected property change..."' +
         nextProps.item +
@@ -165,12 +159,10 @@ class ToDoList extends React.Component {
     console.log("-- render");
     
     let text = this.state.checked ? <strike>{this.state.value}</strike> : this.state.value;
+    let checked= this.state.checked ? 'checked' : '';
     return (
       <li className="main">
-        <input type="checkbox" onClick={this.handleClick} id={this.props.i}/>{text}
-        <button className='remove'  id={this.props.i} onClick={this.props.remove}>
-          Remove
-        </button>
+        <input className='checkbox' type="checkbox" onClick={this.handleClick} id={this.props.i} checked={checked} />{text}
       </li>
     );
   }
