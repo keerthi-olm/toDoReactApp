@@ -98,11 +98,11 @@ console.log(this.doneList);
   removeItem = id => {
 
 
-      let f = this.doneList.filter(function (val) {
+      let checkIfInDoneList = this.doneList.filter(function (val) {
           return (val === id);
       });
 
-      if (f===undefined || f.length===0) {
+      if (checkIfInDoneList===undefined || checkIfInDoneList.length===0) {
       // add to list
       this.doneList.push(id);
       } else {
