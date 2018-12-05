@@ -29,20 +29,20 @@ componentWillUpdate(nextProps, nextState) {
     return (
       <div className="App widget">
         <ul id="list">
-          <li className="header"><h2>My to do list </h2></li>
-          <li className="mainsmall">
+          <li className="header"><h2 className='title'>My to do list </h2></li>
+          <li className="add_reset_section">
             <input ref={this.newItem} placeholder="Add a new task..."/>
           </li>
           <li className="button add">
-            <button onClick={this.add}>Add</button>
+            <button onClick={this._handleAddItem}>Add</button>
           </li>
           <li className="button reset">
-            <button onClick={this.reset}>Reset</button>
+            <button onClick={this._handleResetList}>Reset</button>
           </li>
           {this.state.list.map((value, i) => {
-            return <ToDoList key={i} i={i} item={value} remove={this.remove} removeItem={this.removeItem}/>;
+            return <ToDoList key={i} i={i} item={value} remove={this._handleRemoveDoneItems} removeItem={this._handleUpdateDoneList}/>;
           })}
-          <li className="footer"><button className='remove'  onClick={this.remove}>
+          <li className="footer"><button className='remove'  onClick={this._handleRemoveDoneItems}>
           Remove
         </button></li>
         </ul>
@@ -50,7 +50,7 @@ componentWillUpdate(nextProps, nextState) {
     );
   }
 
-  add = () => {
+  _handleAddItem = () => {
     //  let newItem =this.refs.newItem.value;
     let newItem = this.newItem.current["value"];
     if (newItem!=='') {
@@ -70,7 +70,7 @@ componentWillUpdate(nextProps, nextState) {
 
   };
 
-  reset = () => {
+ _handleResetList = () => {
     //  let newItem =this.refs.newItem.value;
     console.log("\n ***Reset Button Pressed... **");
     console.log(
@@ -81,21 +81,22 @@ componentWillUpdate(nextProps, nextState) {
     this.setState({ list: [...ToDoApp.defaultProps.list] });
   };
 
-  remove = e => {
+  _handleRemoveDoneItems = e => {
 
 
-this.doneList.sort((a, b) => a - b);
-console.log(this.doneList);
+    this.doneList.sort((a, b) => a - b);
+    console.log(this.doneList);
     for (var i = this.doneList.length -1; i >= 0; i--)
        this.list.splice(this.doneList[i],1);
 
- this.setState({ list: [...this.list] });
-
-   console.log(this.list);
-   this.doneList=[];
+    this.setState({ list: [...this.list] });
+   
+    console.log(this.list);
+    this.doneList=[];
 
   };
-  removeItem = id => {
+
+  _handleUpdateDoneList = id => {
 
 
       let checkIfInDoneList = this.doneList.filter(function (val) {
@@ -147,7 +148,7 @@ class ToDoList extends React.Component {
         this.props.item
     );
   }
-  handleClick = (e) => {
+  _handleCheckBoxClick = (e) => {
     this.setState({
       checked: !this.state.checked
     });
@@ -162,7 +163,7 @@ class ToDoList extends React.Component {
     let checked= this.state.checked ? 'checked' : '';
     return (
       <li className="main">
-        <input className='checkbox' type="checkbox" onClick={this.handleClick} id={this.props.i} checked={checked} />{text}
+        <input className='checkbox' type="checkbox" onClick={this._handleCheckBoxClick} id={this.props.i} checked={checked} />{text}
       </li>
     );
   }

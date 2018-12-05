@@ -34,7 +34,7 @@
 .button {
   flex: 1;
 }
-.mainsmall {
+.add_reset_section {
   flex: 9;
 }
 
@@ -70,7 +70,7 @@ button.remove {
   height: ;
 }
 
-.widget li.mainsmall input {
+.widget li.add_reset_section input {
   width: 100%;
   height: 100%;
 }
