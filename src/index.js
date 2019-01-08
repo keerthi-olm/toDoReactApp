@@ -27,10 +27,10 @@ componentWillUpdate(nextProps, nextState) {
 
   render() {
     return (
-      <div className="App widget">
-        <ul id="list">
+      <div className="App">
+        <ul id="todo_widget">
           <li className="header"><h2 className='title'>My to do list </h2></li>
-          <li className="add_reset_section">
+          <li className="new_item add_reset_section">
             <input ref={this.newItem} placeholder="Add a new task..."/>
           </li>
           <li className="button add">
@@ -162,7 +162,7 @@ class ToDoList extends React.Component {
     let text = this.state.checked ? <strike>{this.state.value}</strike> : this.state.value;
     let checked= this.state.checked ? 'checked' : '';
     return (
-      <li className="main">
+      <li className="todo_item ">
         <input className='checkbox' type="checkbox" onClick={this._handleCheckBoxClick} id={this.props.i} checked={checked} />{text}
       </li>
     );
